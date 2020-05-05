@@ -10,3 +10,11 @@ border: 1px solid white;
     background: rgba(255, 74, 202, 0.2);
     transition: background .3s ease-in-out;
 }
+
+.AnswerItem.success{
+background: green;
+}
+
+.AnswerItem.error {
+background: red;
+}
