@@ -8,7 +8,7 @@ export default class QuizList extends React.Component {
         return [1, 2, 3].map((quiz, index) => {
             return (
                 <li key={index}>
-                    <NavLink to={"/" + quiz}>
+                    <NavLink to={"/quiz/" + quiz}>
                         Тест {quiz}
                     </NavLink>
                 </li>
