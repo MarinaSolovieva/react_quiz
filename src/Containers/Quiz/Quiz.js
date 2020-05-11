@@ -2,6 +2,8 @@ import React from "react";
 import s from "./Quiz.module.css"
 import ActiveQuiz from "../../Components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../Components/FinishedQuiz/FinishedQuiz";
+import instance from "../../Api/Api";
+import Preloader from "../../Components/Ui/Preloader/Preloader";
 
 class Quiz extends React.Component {
     state = {
@@ -9,30 +11,8 @@ class Quiz extends React.Component {
         isFinished: false,
         activeQuestion: 0,
         answerState: null, // { [id]: "success" "error" }
-        quiz: [
-            {
-                question: "Какого цвета небо",
-                id: 1,
-                rightAnswerId: 2,
-                answers: [
-                    {text: "Черный", id: 1},
-                    {text: "Синий", id: 2},
-                    {text: "Красный", id: 3},
-                    {text: "Зеленый", id: 4}
-                ]
-            },
-            {
-                question: "В каком году основали Санкт-Петербург",
-                id: 2,
-                rightAnswerId: 3,
-                answers: [
-                    {text: "1700", id: 1},
-                    {text: "1702", id: 2},
-                    {text: "1703", id: 3},
-                    {text: "1803", id: 4}
-                ]
-            }
-        ]
+        quiz: [],
+        isLoading: true
     }
 
     onAnswerClickHandler = answerId => {
@@ -88,16 +68,32 @@ class Quiz extends React.Component {
             results: {},  // { [id]: "success" "error" }
             isFinished: false
         })
+    };
+
+async componentDidMount() {
+    try {
+        const response = await instance.get(`quizez/${this.props.match.params.id}.json`)
+        const quiz = response.data
+            this.setState({
+                quiz,
+                isLoading: false
+            })
+    } catch (error) {
+        console.log(error)
     }
 
+}
 
     render() {
         return (
             <div className={s.Quiz}>
                 <div className={s.quizWrapper}>
                     <h1>Ответьте на все вопросы</h1>
+
                     {
-                        this.state.isFinished
+                        this.state.isLoading
+                        ? <Preloader/>
+                        : this.state.isFinished
                             ? <FinishedQuiz results={this.state.results}
                                             quiz={this.state.quiz}
                                             onRetry={this.retryHandler}/>
@@ -108,6 +104,7 @@ class Quiz extends React.Component {
                                           quizLength={this.state.quiz.length}
                                           state={this.state.answerState}/>
                     }
+
 
                 </div>
             </div>
