@@ -3,9 +3,11 @@ import s from "./Auth.module.css"
 import Button from "../../Components/Ui/Button/button";
 import Input from "../../Components/Ui/Input/input";
 import is from "is_js"
+import {connect} from "react-redux";
+import {auth} from "../../store/actions/auth";
 
 
-export default class Auth extends React.Component {
+class Auth extends React.Component {
     state = {
         isFormValid: false,
         formControls: {
@@ -37,11 +39,22 @@ export default class Auth extends React.Component {
     };
 
     loginHandler = () => {
-
+        this.props.auth(
+            this.state.formControls.email.value,
+            this.state.formControls.password.value,
+            true
+        )
     };
+
+
     registerHandler = () => {
-
+        this.props.auth(
+            this.state.formControls.email.value,
+            this.state.formControls.password.value,
+            false
+        )
     };
+
     submitHandler = event => {
         event.preventDefault()
     };
@@ -106,7 +119,6 @@ export default class Auth extends React.Component {
     };
 
 
-
     render() {
         return (
             <div className={s.auth}>
@@ -134,4 +146,13 @@ export default class Auth extends React.Component {
         )
     }
 }
+
+
+function mapDispatchToProps(dispatch) {
+    return {
+        auth: (email, password, isLogin) => dispatch(auth(email, password, isLogin))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Auth)
 
