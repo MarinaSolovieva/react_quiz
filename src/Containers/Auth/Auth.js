@@ -12,7 +12,7 @@ class Auth extends React.Component {
         isFormValid: false,
         formControls: {
             email: {
-                value: " ",
+                value: "",
                 type: "email",
                 label: "Email",
                 errorMessage: "Введите корректный email",
@@ -24,7 +24,7 @@ class Auth extends React.Component {
                 }
             },
             password: {
-                value: " ",
+                value: "",
                 type: "password",
                 label: "Пароль",
                 errorMessage: "Введите корректный пароль",
